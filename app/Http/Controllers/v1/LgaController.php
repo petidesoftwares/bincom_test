@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lga;
+use App\Models\States;
 use Illuminate\Http\Request;
 
 class LgaController extends Controller
@@ -15,10 +16,13 @@ class LgaController extends Controller
      */
     public function index()
     {
-        return response()->json([Lga::all()]);
+        return response()->json(["lgas"=>Lga::all()]);
     }
 
-
+    public function getLgasByStateID($id){
+        $result = Lga::where('state_id', $id)->get();
+        return response()->json(["lgas"=>$result]);
+    }
     /**
      * Show the form for creating a new resource.
      *

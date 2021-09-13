@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\States;
+use App\Models\Anounced_lga_results;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class StateController extends Controller
+class AnnouncedLgaResultController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,17 @@ class StateController extends Controller
      */
     public function index()
     {
-        return response()->json(['States'=>States::all()]);
+        return response()->json(['lga-result'=>Anounced_lga_results::all()]);
+    }
+
+    public function sumTotalLgaResult($id){
+        $sum = DB::table('announced_lga_results')->where('lga_name',$id)->sum('party_score');
+        return response()->json(['sum'=>$sum]);
+    }
+
+    public function sumLgaResult($id){
+        $result = Anounced_lga_results::where('lga_name',$id)->get();
+        return response()->json(['lga_result'=>$result]);
     }
 
     /**
