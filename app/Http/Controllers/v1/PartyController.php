@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Polling_unit;
+use App\Models\Party;
 use Illuminate\Http\Request;
 
-class PollingUnitController extends Controller
+class PartyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +15,7 @@ class PollingUnitController extends Controller
      */
     public function index()
     {
-        return response()->json(Polling_unit::all());
-    }
-
-    public function wardUnits($id){
-        $units = Polling_unit::where('ward_id',$id)->get();
-        return response()->json(["units"=>$units]);
-
+        return response()->json(['parties'=>Party::all()]);
     }
 
     /**
@@ -42,7 +36,7 @@ class PollingUnitController extends Controller
      */
     public function store(Request $request)
     {
-
+        //
     }
 
     /**

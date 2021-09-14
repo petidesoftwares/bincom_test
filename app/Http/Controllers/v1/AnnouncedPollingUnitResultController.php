@@ -5,7 +5,10 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Anounced_pu_results;
 use App\Models\Polling_unit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Validator;
 
 class AnnouncedPollingUnitResultController extends Controller
 {
@@ -46,7 +49,35 @@ class AnnouncedPollingUnitResultController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pollUnitNumber = $request->input("unitNumber");
+        $agentName = $request->input('agentName');
+        $dataKeys = $request->get("dataKey");
+        $result = $request->get("result");
+        $validate =Validator::make([
+            'unitNumber'=>'required|unique',
+            'agentName'=>'required'
+        ],[
+            'unitNumber.required'=>'Polling unit number cannot be empty',
+            'unitNumber.unique'=>'Another polling Unit already have that number',
+            'agentName.requred'=>'Agent name cannot be empty'
+        ]);
+        $validate->validate();
+
+        //get polling unit uniqueid
+        $unitUniqueID = Polling_unit::where('polling_unit_number',$pollUnitNumber)->get('uniqueid');
+        for ($i=0; $i<count($dataKeys);$i++){
+            $date = Carbon::now();
+        $storageData =['polling_unit_uniquid'=>$unitUniqueID,
+            'entered_by_user'=>$agentName,
+            'party_abbreviation'=>$dataKeys[$i],
+            'party_score'=>$result[$i],
+//            'date_entered'=>$date->toDateTimeString(),
+            'user_ip_address'=>$request->getClientIp()
+        ];
+
+        Anounced_pu_results::create($storageData);
+        }
+        return response()->json(['message'=>'Result uploaded successfully']);
     }
 
     /**
