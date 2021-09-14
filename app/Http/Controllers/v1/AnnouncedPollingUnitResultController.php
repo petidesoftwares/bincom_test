@@ -67,7 +67,7 @@ class AnnouncedPollingUnitResultController extends Controller
         $unitUniqueID = Polling_unit::where('polling_unit_number',$pollUnitNumber)->get('uniqueid');
         for ($i=0; $i<count($dataKeys);$i++){
             $date = Carbon::now();
-        $storageData =['polling_unit_uniqueid'=>$unitUniqueID,
+        $storageData =['polling_unit_uniqueid'=>$unitUniqueID->uniqueid,
             'entered_by_user'=>$agentName,
             'party_abbreviation'=>$dataKeys[$i],
             'party_score'=>$result[$i],
