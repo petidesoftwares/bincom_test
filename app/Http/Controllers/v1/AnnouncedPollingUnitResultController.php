@@ -67,11 +67,11 @@ class AnnouncedPollingUnitResultController extends Controller
         $unitUniqueID = Polling_unit::where('polling_unit_number',$pollUnitNumber)->get('uniqueid');
         for ($i=0; $i<count($dataKeys);$i++){
             $date = Carbon::now();
-        $storageData =['polling_unit_uniquid'=>$unitUniqueID,
+        $storageData =['polling_unit_uniqueid'=>$unitUniqueID,
             'entered_by_user'=>$agentName,
             'party_abbreviation'=>$dataKeys[$i],
             'party_score'=>$result[$i],
-//            'date_entered'=>$date->toDateTimeString(),
+            'date_entered'=>$date->toDateTimeString(),
             'user_ip_address'=>$request->getClientIp()
         ];
 
